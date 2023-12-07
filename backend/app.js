@@ -1,13 +1,17 @@
 require("dotenv").config();
 const express = require("express");
+const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users");
-const productsRoutes = require("./routes/products"); 
-
+const productsRoutes = require("./routes/products");
+const notesRoutes = require("./routes/notes");
+const cors = require("cors");
 //Express app
 const app = express();
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
+app.use(express.json());
+app.use(cors());
 // middleware --> logging --> saving user activity
 
 app.use((req, res, next) => {
@@ -25,6 +29,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", usersRoutes);
 app.use("/products", productsRoutes);
+app.use("/notes", notesRoutes);
 
 //middleware --> error handling
 app.use((req, res, next) => {
@@ -34,6 +39,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(port, () => {
-  console.log(`server is running at http://localhost:${port}`);
-});
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(
+    console.log("connected to MongoBD successfully"),
+    app.listen(port, () => {
+      console.log(`server is running at http://localhost:${port}`);
+    })
+  )
+  .catch((err) => console.log(err));

@@ -1,0 +1,21 @@
+.products-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-product-button {
+  margin-bottom: 16px;
+}
+
+.product-card {
+  background-color: rgb(180, 229, 255);
+  width: 200px;
+  border-radius: 10px;
+  padding: 30px;
+  margin: 30px;
+  cursor: pointer;
+}
+
+.loading-message {
+  display: flex;
+}
