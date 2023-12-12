@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+const User = require("../../models/users");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+};
+
+const signInUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).send("Please enter your email and password.");
+    return;
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(404).send("User does not exist.");
+    return;
+  }
+  const isMatched = await bcrypt.compare(password, user.password);
+  if (!isMatched) {
+    res.status(400).send("Invalid credentials.");
+    return;
+  }
+  const token = createToken(user._id);
+  res.status(200).json({ message: "Sign in successfully", user, token });
+};
+
+module.exports = { signInUser };
