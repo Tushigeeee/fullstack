@@ -2,15 +2,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  height: 60px;
   width: calc(100vw - 100px);
   padding-left: 50px;
   padding-right: 50px;
+  background-color: rgb(141, 239, 119);
 }
 
-.Header-Left {
-  cursor: pointer;
+.Header-Left,
+.Header-Right-Item {
+  margin-right: 20px;
 }
-.Header-Right {
-  min-width: 100%;
+
+.Header-right {
+  display: flex;
+  align-items: center;
+}
+
+.Header-Right-Item a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: rgb(41, 156, 160);
 }

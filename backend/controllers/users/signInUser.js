@@ -3,7 +3,7 @@ const User = require("../../models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const createToken = (id) => {
+const CreateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
@@ -26,8 +26,12 @@ const signInUser = async (req, res) => {
     res.status(400).send("Invalid credentials.");
     return;
   }
-  const token = createToken(user._id);
-  res.status(200).json({ message: "Sign in successfully", user, token });
+  const token = CreateToken(user._id);
+  res.status(200).json({
+    message: "Sign in successfully",
+    user: { email: user.email },
+    token,
+  });
 };
 
 module.exports = { signInUser };
