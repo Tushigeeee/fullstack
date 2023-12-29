@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "fullstack-frontend-eight.vercel.app",
+    origin: "https://fullstack-frontend-eight.vercel.app",
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionsSuccessStatus: 204,
