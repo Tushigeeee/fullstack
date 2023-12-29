@@ -17,7 +17,7 @@ export const CreateProductModal = (props) => {
 
   const submitProductForm = async (values) => {
     const response = await axios.post(
-      "http://localhost:8080/products",
+      "https://fullstack-backend-zsxe.onrender.com/products",
       values,
       {
         headers: {

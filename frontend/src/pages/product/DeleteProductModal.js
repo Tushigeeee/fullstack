@@ -11,6 +11,7 @@ export const DeleteProductModal = (props) => {
   const { handleCloseDelete, openDelete, id } = props;
 
   const { currentUser } = useUserContext();
+
   const { successNotification, errorNotification } = useNotificationContext();
   const { Delete_Product } = useProductContext();
 
@@ -19,7 +20,7 @@ export const DeleteProductModal = (props) => {
   const handleDeleteButton = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8080/products/${id}`,
+        `https://fullstack-backend-zsxe.onrender.com/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
@@ -29,19 +30,13 @@ export const DeleteProductModal = (props) => {
 
       const data = await response.data;
 
-      if (response.status === 200) {
-        Delete_Product(data._id);
-        successNotification("Product Deleted successfully");
-        handleCloseDelete();
-        navigate("/products");
-      } else {
-        // Handle unexpected response status codes
-        errorNotification(`Unexpected response: ${response.status}`);
-        console.error(`Unexpected response: ${response.status}`);
-      }
+      Delete_Product(data._id);
+
+      successNotification("Product Deleted successfully");
+      handleCloseDelete();
+      navigate("/products");
     } catch (err) {
-      // Handle network errors or other exceptions
-      errorNotification(err?.message || "An error occurred");
+      errorNotification(err?.message);
       console.error(err);
     }
   };

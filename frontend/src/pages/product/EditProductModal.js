@@ -23,16 +23,16 @@ export const EditProductModal = (props) => {
 
     try {
       if (
-        updatedProduct.name === selectedProduct.name ||
-        updatedProduct.price === selectedProduct.price ||
-        updatedProduct.description === selectedProduct.description ||
+        updatedProduct.name === selectedProduct.name &&
+        updatedProduct.price === selectedProduct.price &&
+        updatedProduct.description === selectedProduct.description &&
         updatedProduct.category === selectedProduct.category
       ) {
         warningNotification("Nothing changed");
         handleClose();
       } else {
         const response = await axios.put(
-          `http://localhost:8080/products/${id}`,
+          `https://fullstack-backend-zsxe.onrender.com/products/${id}`,
           updatedProduct,
           {
             headers: {
@@ -113,7 +113,6 @@ export const EditProductModal = (props) => {
             </Form.Item>
 
             <div
-              className="d-flex just-s-evenly margin-top-10 gap-10"
               style={{
                 display: "flex",
                 justifyContent: "space-evenly",
