@@ -25,7 +25,7 @@ export const Header = () => {
       </div>
       <div className="Header-Right">
         <div className="Header-Right-Item">
-          <Link to="/products">Products</Link>
+          {currentUser && <Link to="/products">Products</Link>}
           {currentUser ? (
             <Link to="/" onClick={handleLogOut}>
               Sign Out
