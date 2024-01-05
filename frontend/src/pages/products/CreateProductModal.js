@@ -5,14 +5,14 @@ import { useNotificationContext } from "../../context/NotificationContext";
 import { Button, Form, Input, InputNumber } from "antd";
 import { useUserContext } from "../../context/UserContext";
 import { useProductContext } from "../../context/ProductsContext";
+import { Radio } from "antd";
 
 export const CreateProductModal = (props) => {
   const { handleClose, open } = props;
-
+  const [type, setType] = React.useState("public");
   const { currentUser } = useUserContext();
   const { Create_Product } = useProductContext();
 
-  //input values
   const { successNotification } = useNotificationContext();
 
   const submitProductForm = async (values) => {
@@ -33,7 +33,11 @@ export const CreateProductModal = (props) => {
     handleClose();
     successNotification("Create Product successfully");
   };
+  const onChangeType = (e) => {
+    setType(e.target.value);
+  };
 
+  const plainOptions = ["public", "private"];
   return (
     <div>
       <Modal handleClose={handleClose} open={open}>
@@ -91,7 +95,22 @@ export const CreateProductModal = (props) => {
             >
               <Input />
             </Form.Item>
-
+            <Form.Item
+              label="Type"
+              name="type"
+              rules={[{ required: true, message: "Required" }]}
+            >
+              <Radio.Group
+                options={plainOptions.map((option) => ({
+                  label: option.charAt(0).toUpperCase() + option.slice(1),
+                  value: option,
+                }))}
+                onChange={onChangeType}
+                value={type}
+                optionType="button"
+                buttonStyle="solid"
+              />
+            </Form.Item>
             <div
               style={{
                 display: "flex",

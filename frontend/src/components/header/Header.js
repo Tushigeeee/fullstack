@@ -6,12 +6,12 @@ import { useNotificationContext } from "../../context/NotificationContext";
 export const Header = () => {
   const { currentUser, signOut, userContextLoading, setProducts } =
     useUserContext();
-  const { successNotification } = useNotificationContext;
+
+  const { successNotification } = useNotificationContext();
   const handleLogOut = () => {
     signOut();
-    setProducts([]);
-
     successNotification("You have been logged out");
+    setProducts([]);
   };
 
   if (userContextLoading) {
