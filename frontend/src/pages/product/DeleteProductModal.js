@@ -20,7 +20,7 @@ export const DeleteProductModal = (props) => {
   const handleDeleteButton = async () => {
     try {
       const response = await axios.delete(
-        `https://fullstack-backend-zsxe.onrender.com/products/${id}`,
+        `http://localhost:8080/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,

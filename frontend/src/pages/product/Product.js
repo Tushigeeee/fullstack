@@ -26,53 +26,21 @@ export const SingleProduct = () => {
     return <div>...Loading Products</div>;
   } else {
     return (
-      <div
-        style={{
-          flexDirection: "column",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
+      <div className="single-product-container">
         <Header />
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-evenly",
-            paddingTop: "10x",
-          }}
-        >
-          This is Single Product page
-          <Flex style={{ gap: "10px", wrap: "wrap" }}>
+        <div className="single-product-header">
+          <Flex className="single-product-buttons">
             <Button block onClick={handleOpen}>
-              {" "}
               Edit
             </Button>
             <Button block onClick={handleOpenDelete}>
-              {" "}
               Delete
             </Button>
           </Flex>
         </div>
         {selectedProduct && (
-          <div
-            style={{
-              backgroundColor: "whitesmoke",
-              height: "50%",
-              width: "80%",
-              borderRadius: "10px",
-              padding: "20px",
-              margin: "20px",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                width: "40%",
-              }}
-            >
+          <div className="single-product-content">
+            <div style={{ width: "40%" }}>
               <h3>Name : {selectedProduct.name}</h3>
               <p>Description : {selectedProduct.description}</p>
               <p>Price : {selectedProduct.price}</p>

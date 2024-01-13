@@ -23,6 +23,7 @@ export const Header = () => {
       <div className="Header-Left">
         <Link to="/">Home</Link>
       </div>
+
       <div className="Header-Right">
         <div className="Header-Right-Item">
           {currentUser && <Link to="/products">Products</Link>}

@@ -14,14 +14,11 @@ const SignUp = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post(
-        `https://fullstack-backend-zsxe.onrender.com/users/sign-up`,
-        {
-          name: values.name,
-          email: values.email,
-          password: values.password,
-        }
-      );
+      const response = await axios.post(`http://localhost:8080/users/sign-up`, {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
 
       const data = response.data;
       localStorage.setItem("user", JSON.stringify(data));

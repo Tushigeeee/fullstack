@@ -24,8 +24,16 @@ const productSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["Public", "Private"],
+      enum: ["public", "private"],
       required: [true, "Product type is required"],
+    },
+    userEmail: {
+      type: String,
+      required: [true, "Product email is required"],
+    },
+    image: {
+      type: String,
+      required: [true, "image is required"],
     },
   },
   { timestamps: true }

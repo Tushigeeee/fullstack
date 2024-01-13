@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Modal } from "../../components/Modal/Modal";
 import { useNotificationContext } from "../../context/NotificationContext";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Radio } from "antd";
 import { useUserContext } from "../../context/UserContext";
 import { useProductContext } from "../../context/ProductsContext";
-import { Radio } from "antd";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
+import { storage } from "../../firebase/firebase";
+
+const plainOptions = ["public", "private"];
 
 export const CreateProductModal = (props) => {
+  const [img, setImg] = useState();
+
+  const uploadImage = async (file) => {
+    try {
+      const storageRef = ref(storage, `file/${v4()}`);
+      await uploadBytes(storageRef, file);
+
+      const downloadURL = await getDownloadURL(storageRef);
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   const { handleClose, open } = props;
   const [type, setType] = React.useState("public");
   const { currentUser } = useUserContext();
@@ -16,28 +34,34 @@ export const CreateProductModal = (props) => {
   const { successNotification } = useNotificationContext();
 
   const submitProductForm = async (values) => {
-    const response = await axios.post(
-      "https://fullstack-backend-zsxe.onrender.com/products",
-      values,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentUser.token}`,
-        },
-      }
-    );
+    try {
+      const imageUrl = await uploadImage(img);
 
-    const data = await response.data;
+      const response = await axios.post(
+        "http://localhost:8080/products",
+        { ...values, image: imageUrl },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
 
-    Create_Product(data);
-    handleClose();
-    successNotification("Create Product successfully");
+      const data = await response.data;
+
+      Create_Product(data);
+      handleClose();
+      successNotification("Create Product successfully");
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
   };
+
   const onChangeType = (e) => {
     setType(e.target.value);
   };
 
-  const plainOptions = ["public", "private"];
   return (
     <div>
       <Modal handleClose={handleClose} open={open}>
@@ -65,7 +89,7 @@ export const CreateProductModal = (props) => {
               name="name"
               rules={[
                 { required: true, message: "Required" },
-                { min: 4, message: "must be more that 4 character" },
+                { min: 2, message: "Must be more than 2 characters" },
               ]}
             >
               <Input />
@@ -101,15 +125,19 @@ export const CreateProductModal = (props) => {
               rules={[{ required: true, message: "Required" }]}
             >
               <Radio.Group
-                options={plainOptions.map((option) => ({
-                  label: option.charAt(0).toUpperCase() + option.slice(1),
-                  value: option,
-                }))}
+                options={plainOptions}
                 onChange={onChangeType}
                 value={type}
                 optionType="button"
                 buttonStyle="solid"
               />
+            </Form.Item>
+            <Form.Item
+              label="Image"
+              name="image"
+              rules={[{ required: true, message: "Required" }]}
+            >
+              <Input type="file" onChange={(e) => setImg(e.target.files[0])} />
             </Form.Item>
             <div
               style={{

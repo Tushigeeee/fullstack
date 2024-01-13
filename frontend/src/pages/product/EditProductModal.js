@@ -32,7 +32,7 @@ export const EditProductModal = (props) => {
         handleClose();
       } else {
         const response = await axios.put(
-          `https://fullstack-backend-zsxe.onrender.com/products/${id}`,
+          `http://localhost:8080/products/${id}`,
           updatedProduct,
           {
             headers: {
@@ -81,7 +81,7 @@ export const EditProductModal = (props) => {
               name="name"
               rules={[
                 { required: true, message: "Required" },
-                { min: 4, message: "must be more than 4 characters" },
+                { min: 2, message: "must be more than 2 characters" },
               ]}
             >
               <Input />

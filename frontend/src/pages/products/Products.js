@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "antd"; // Correct import statement
+import { Button } from "antd";
 import "./Products.css";
 import { Header } from "../../components/header/Header";
 import { CreateProductModal } from "./CreateProductModal";
@@ -14,26 +14,26 @@ export const Products = () => {
   const handleClose = () => setOpen(false);
 
   const { products, productContextLoading } = useProductContext();
-
+  console.log(products);
   if (productContextLoading) {
-    return <div>...Loading Products</div>;
+    return <div className="loading">...Loading Products</div>;
   }
 
   return (
     <div className="products-container">
-      <div>
-        <Header />
+      <Header />
 
-        <div>
-          <Button
-            variant="outlined"
-            onClick={handleOpen}
-            className="create-product-button"
-          >
-            Create Product
-          </Button>
-        </div>
+      <div className="button-container">
+        <Button
+          variant="outlined"
+          onClick={handleOpen}
+          className="create-product-button"
+        >
+          Create Product
+        </Button>
+      </div>
 
+      <div className="product-cards-container">
         {products &&
           products.map((product) => (
             <div
@@ -42,12 +42,32 @@ export const Products = () => {
               onClick={() => navigate(`/products/${product._id}`)}
             >
               <h3>Name: {product.name}</h3>
+              {}
+
+              <img
+                style={{ width: "200px", height: "150px" }}
+                src={product.image}
+                alt={product.name}
+              />
+
+              <p
+                style={{
+                  color: product.type === "public" ? "lightgreen" : "lightblue",
+                }}
+              >
+                Type: {product.type}
+              </p>
+
               <p>Description: {product.description}</p>
               <p>Price: {product.price}</p>
               <p>Category: {product.category}</p>
+              <p style={{ color: "lightyellow" }}>
+                Added by {product.userEmail}
+              </p>
             </div>
           ))}
       </div>
+
       <CreateProductModal open={open} handleClose={handleClose} />
     </div>
   );

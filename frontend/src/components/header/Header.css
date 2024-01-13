@@ -6,7 +6,7 @@
   width: calc(100vw - 100px);
   padding-left: 50px;
   padding-right: 50px;
-  background-color: rgb(141, 239, 119);
+  background-color: lightcyan;
 }
 
 .Header-Left,
