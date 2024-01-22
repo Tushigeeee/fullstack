@@ -2,7 +2,7 @@ import React from "react";
 import { Header } from "../../components/header/Header";
 import "./Home.css";
 
-export const Home = () => {
+export const HomePage = () => {
   return (
     <div className="home-container">
       <Header />
@@ -15,7 +15,7 @@ export const Home = () => {
 
         <div className="home-content">
           <h1>Welcome to Our Website!</h1>
-          <p>Discover amazing products that suit your needs.</p>
+          <h2>Discover amazing products that suit your needs.</h2>
         </div>
       </div>
     </div>

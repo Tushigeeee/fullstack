@@ -3,8 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
-const notesRoutes = require("./routes/notes");
+const accountsRoutes = require("./routes/accounts");
 const cors = require("cors");
+
 //Express app
 const app = express();
 app.use(express.json());
@@ -39,7 +40,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", usersRoutes);
 app.use("/products", productsRoutes);
-app.use("/notes", notesRoutes);
+app.use("/account", accountsRoutes);
 
 //middleware --> error handling
 app.use((req, res, next) => {

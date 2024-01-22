@@ -5,26 +5,12 @@ import { useNotificationContext } from "../../context/NotificationContext";
 import { Button, Form, Input, InputNumber, Radio } from "antd";
 import { useUserContext } from "../../context/UserContext";
 import { useProductContext } from "../../context/ProductsContext";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
-import { storage } from "../../firebase/firebase";
+import { uploadImage } from "../utils/utils";
 
 const plainOptions = ["public", "private"];
 
 export const CreateProductModal = (props) => {
   const [img, setImg] = useState();
-
-  const uploadImage = async (file) => {
-    try {
-      const storageRef = ref(storage, `file/${v4()}`);
-      await uploadBytes(storageRef, file);
-
-      const downloadURL = await getDownloadURL(storageRef);
-      return downloadURL;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
 
   const { handleClose, open } = props;
   const [type, setType] = React.useState("public");

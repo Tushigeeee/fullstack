@@ -1,53 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useProductContext } from "../../context/ProductsContext";
 import { useUserContext } from "../../context/UserContext";
 import { useNotificationContext } from "../../context/NotificationContext";
 import { Modal } from "../../components/Modal/Modal";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Image, Radio } from "antd";
+import { uploadImage } from "../utils/utils";
 
 export const EditProductModal = (props) => {
-  const { handleClose, open, selectedProduct, id } = props;
+  const {
+    handleClose,
+    open,
+    selectedProduct,
+    id,
+    setNewImageUrl,
+    newImageUrl,
+  } = props;
   const { Update_Product } = useProductContext();
   const { currentUser } = useUserContext();
 
-  const { successNotification, warningNotification } = useNotificationContext();
+  const { successNotification } = useNotificationContext();
 
+  const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
+  const [selectedType, setSelectedType] = useState(selectedProduct.type);
+
+  const lenght = newImageUrl?.length;
+
+  const handleFileChange = async (e) => {
+    const imageUrl = await uploadImage(e.target.files[0]);
+    setNewImageUrl(imageUrl);
+  };
+  const onChangeType = ({ target: { value } }) => {
+    setSelectedType(value);
+  };
+
+  const options = [
+    {
+      label: "public",
+      value: "public",
+    },
+    {
+      label: "private",
+      value: "private",
+    },
+  ];
+  const inputPress = (e) => {
+    const { value, name } = e.target;
+    setDisabledSubmitButton(value === selectedProduct[name]);
+  };
   const handleEditButton = async (values) => {
     const updatedProduct = {
       name: values.name,
       description: values.description,
       price: values.price,
       category: values.category,
+      type: values.type,
+      image: newImageUrl ? newImageUrl : selectedProduct.image,
     };
 
     try {
-      if (
-        updatedProduct.name === selectedProduct.name &&
-        updatedProduct.price === selectedProduct.price &&
-        updatedProduct.description === selectedProduct.description &&
-        updatedProduct.category === selectedProduct.category
-      ) {
-        warningNotification("Nothing changed");
-        handleClose();
-      } else {
-        const response = await axios.put(
-          `http://localhost:8080/products/${id}`,
-          updatedProduct,
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser.token}`,
-            },
-          }
-        );
+      const response = await axios.put(
+        `http://localhost:8080/products/${id}`,
+        updatedProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        }
+      );
 
-        const data = await response.data;
+      const data = await response.data;
 
-        Update_Product(data);
+      Update_Product(data);
 
-        successNotification("Product edited successfully");
-        handleClose();
-      }
+      successNotification("Product edited successfully");
+      handleClose();
+      setDisabledSubmitButton(true);
     } catch (err) {
       console.error(err);
     }
@@ -62,6 +90,7 @@ export const EditProductModal = (props) => {
               description: selectedProduct.description,
               category: selectedProduct.category,
               price: selectedProduct.price,
+              type: selectedProduct.type,
             }}
             name="trigger"
             onFinish={(values) => {
@@ -111,6 +140,45 @@ export const EditProductModal = (props) => {
             >
               <Input />
             </Form.Item>
+            <Form.Item
+              label="Type"
+              name="type"
+              rules={[{ required: true, message: "Required" }]}
+            >
+              <Radio.Group
+                options={options}
+                onChange={(onChangeType, inputPress)}
+                value={selectedType}
+                optionType="button"
+                buttonStyle="solid"
+              />
+            </Form.Item>
+            <Form.Item label="image" name="image">
+              <label>File</label>
+              <input
+                name="image"
+                onChange={handleFileChange}
+                placeholder="choose file"
+                type="file"
+              />
+              <Image
+                height={"60px"}
+                src={newImageUrl ? newImageUrl : selectedProduct.image}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Type"
+              name="type"
+              rules={[{ required: true, message: "Required" }]}
+            >
+              <Radio.Group
+                options={options}
+                onChange={(onChangeType, inputPress)}
+                value={selectedType}
+                optionType="button"
+                buttonStyle="solid"
+              />
+            </Form.Item>
 
             <div
               style={{
@@ -125,6 +193,7 @@ export const EditProductModal = (props) => {
                 htmlType="submit"
                 block
                 style={{ width: "100%" }}
+                disabled={disabledSubmitButton && lenght === 0}
               >
                 Submit
               </Button>
@@ -132,6 +201,7 @@ export const EditProductModal = (props) => {
                 block
                 onClick={() => {
                   handleClose();
+                  setDisabledSubmitButton(true);
                 }}
                 style={{ width: "100%" }}
               >

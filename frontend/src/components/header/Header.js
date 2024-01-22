@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Header.css";
 import { useUserContext } from "../../context/UserContext";
 import { useNotificationContext } from "../../context/NotificationContext";
+
 export const Header = () => {
   const { currentUser, signOut, userContextLoading, setProducts } =
     useUserContext();
@@ -26,11 +27,23 @@ export const Header = () => {
 
       <div className="Header-Right">
         <div className="Header-Right-Item">
-          {currentUser && <Link to="/products">Products</Link>}
+          {currentUser && (
+            <>
+              <Link to="/products">Products</Link>
+              <Link to="/account">
+                Welcome .
+                {currentUser.user
+                  ? currentUser.user.email
+                  : currentUser.newUser.email}
+              </Link>
+            </>
+          )}
           {currentUser ? (
-            <Link to="/" onClick={handleLogOut}>
-              Sign Out
-            </Link>
+            <>
+              <Link to="/" onClick={handleLogOut}>
+                Sign Out
+              </Link>
+            </>
           ) : (
             <>
               <Link to="/signUp">Sign Up</Link>

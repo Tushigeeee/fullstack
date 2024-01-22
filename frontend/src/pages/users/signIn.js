@@ -1,9 +1,7 @@
 import React from "react";
-
 import { Header } from "../../components/header/Header";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-
 import { useUserContext } from "../../context/UserContext";
 import { useNotificationContext } from "../../context/NotificationContext";
 import { useNavigate } from "react-router-dom";
@@ -82,6 +80,7 @@ export const SignIn = () => {
         autoComplete="off"
       >
         <Form.Item
+          style={{ color: "white" }}
           label="Email"
           name="email"
           rules={[

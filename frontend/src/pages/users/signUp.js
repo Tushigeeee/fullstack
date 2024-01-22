@@ -5,19 +5,21 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../../context/UserContext";
 import { useNotificationContext } from "../../context/NotificationContext";
-
+import { uploadImage } from "../utils/utils";
 const SignUp = () => {
-  const [user, setUser] = useState({});
+  const [img, setImg] = useState();
   const { signUp } = useUserContext();
   const { successNotification, errorNotification } = useNotificationContext();
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
     try {
+      const imageUrl = await uploadImage(img);
       const response = await axios.post(`http://localhost:8080/users/sign-up`, {
         name: values.name,
         email: values.email,
         password: values.password,
+        userImage: imageUrl,
       });
 
       const data = response.data;
@@ -25,8 +27,8 @@ const SignUp = () => {
 
       if (data) {
         signUp(data);
-        setUser(data.user);
-        successNotification(`Sign Up successful, Hello ${user.email}`);
+
+        successNotification(`Sign Up successful, Hello ${data.newUser.email}`);
         navigate("/");
       } else {
         errorNotification("Sign up failed, please try again");
@@ -150,6 +152,13 @@ const SignUp = () => {
           ]}
         >
           <Input.Password />
+        </Form.Item>
+        <Form.Item
+          label="Image"
+          name="image"
+          rules={[{ required: true, message: "Required" }]}
+        >
+          <Input type="file" onChange={(e) => setImg(e.target.files[0])} />
         </Form.Item>
 
         <Form.Item

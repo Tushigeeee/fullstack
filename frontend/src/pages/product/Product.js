@@ -41,10 +41,19 @@ export const SingleProduct = () => {
         {selectedProduct && (
           <div className="single-product-content">
             <div style={{ width: "40%" }}>
-              <h3>Name : {selectedProduct.name}</h3>
-              <p>Description : {selectedProduct.description}</p>
-              <p>Price : {selectedProduct.price}</p>
-              <p>Category : {selectedProduct.category}</p>
+              <h1>Name : {selectedProduct.name}</h1>
+              <img
+                style={{
+                  height: "250px",
+                  width: "300px",
+                  borderRadius: "50px",
+                }}
+                src={selectedProduct.image}
+                alt={"productImage"}
+              />
+              <h3>Description : {selectedProduct.description}</h3>
+              <h3>Price : {selectedProduct.price}</h3>
+              <h3>Category : {selectedProduct.category}</h3>
             </div>
           </div>
         )}

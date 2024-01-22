@@ -41,11 +41,15 @@ export const Products = () => {
               className="product-card"
               onClick={() => navigate(`/products/${product._id}`)}
             >
-              <h3>Name: {product.name}</h3>
+              <h3 style={{ marginLeft: "80px" }}>Name: {product.name}</h3>
               {}
 
               <img
-                style={{ width: "200px", height: "150px" }}
+                style={{
+                  width: "300px",
+                  height: "250px",
+                  borderRadius: "10px",
+                }}
                 src={product.image}
                 alt={product.name}
               />

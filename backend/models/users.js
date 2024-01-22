@@ -11,7 +11,15 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minLenth: 6,
+    minLength: 6,
+    trim: true,
+  },
+  name: {
+    type: String,
+    trim: true,
+  },
+  userImage: {
+    type: String,
     trim: true,
   },
 });

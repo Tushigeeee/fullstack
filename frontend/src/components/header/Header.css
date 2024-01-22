@@ -6,7 +6,7 @@
   width: calc(100vw - 100px);
   padding-left: 50px;
   padding-right: 50px;
-  background-color: lightcyan;
+  background-color: gray;
 }
 
 .Header-Left,
@@ -22,5 +22,5 @@
 .Header-Right-Item a {
   margin-right: 10px;
   text-decoration: none;
-  color: rgb(41, 156, 160);
+  color: white;
 }

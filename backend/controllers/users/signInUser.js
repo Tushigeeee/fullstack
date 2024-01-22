@@ -29,7 +29,12 @@ const signInUser = async (req, res) => {
   const token = CreateToken(user._id);
   res.status(200).json({
     message: "Sign in successfully",
-    user: { email: user.email },
+    user: {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      userImage: user.userImage,
+    },
     token,
   });
 };

@@ -30,14 +30,20 @@ export const UserProvider = (props) => {
     setCurrentUser(null);
   };
 
+  const UPDATE_USER = async (updatedUser) => {
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setCurrentUser(JSON.parse(updatedUser));
+  };
+
   return (
     <userContext.Provider
       value={{
         currentUser,
+        userContextLoading,
         signOut,
         signIn,
         signUp,
-        userContextLoading,
+        UPDATE_USER,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, Products, SingleProduct } from "./pages";
+import { HomePage, Products, Accounts, SingleProduct } from "./pages";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SignIn } from "./pages/users/signIn";
 import { useUserContext } from "./context/UserContext";
@@ -15,7 +15,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route
           path="/products"
           element={currentUser ? <Products /> : <Navigate to="/signIn" />}
@@ -23,6 +23,10 @@ export const App = () => {
         <Route
           path="/products/:id"
           element={currentUser ? <SingleProduct /> : <Navigate to="/signIn" />}
+        />
+        <Route
+          path="/account"
+          element={currentUser ? <Accounts /> : <Navigate to="/signIn" />}
         />
 
         <Route
